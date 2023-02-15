@@ -15,13 +15,13 @@ blue = (50, 153, 213) # sinine värv
 dis_width = 1280 # ekraani laius
 dis_height = 720 # ekraani kõrgus
 # ekraani suuruse muutmine ja aknale nime andmine
-dis = pygame.display.set_mode((dis_width, dis_height)) #
+dis = pygame.display.set_mode((dis_width, dis_height)) # ekraani kõrguse ja laiuse määramine
 pygame.display.set_caption('Reigo Raudsepp - SNAKE GAME') # aknale nime andmine
 
-clock = pygame.time.Clock() #
+clock = pygame.time.Clock() # Loob kella objekti mängu juhtimiseks
 
-snake_block = 10 # ussi suurus
-snake_speed = 15 # ussi kiirus
+snake_block = 10 # mao suurus
+snake_speed = 15 # mao kiirus
 
 font_style = pygame.font.SysFont("microsofthimalaya", 50) # kirja font mis tuleb ette kui sured
 score_font = pygame.font.SysFont("microsofthimalaya", 40) # skoori näitaja font
@@ -69,70 +69,74 @@ def gameLoop():
     foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
     foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
 
-    while not game_over:
+    while not game_over: # mäng jätkub, kuni game_over muutuja väärtus on False.
 
-        while game_close == True:
-            dis.fill(blue)
-            message("Surid ära! C et uuesti mängida. Q et mäng kinni panna", red)
-            Your_score(Length_of_snake - 1)
-            pygame.display.update()
+        while game_close == True: # kui mäng on läbi, kuid kasutaja pole veel mängu uuesti alustanud või mängu sulgenud.
+            dis.fill(blue) # tausta puhastamine ja uue sinise tausta loomine.
+            message("Surid ära! C et uuesti mängida. Q et mäng kinni panna", red) # sõnumi kuvamine kasutajale, et mäng on läbi ja mida ta saab järgmiseks teha.
+            Your_score(Length_of_snake - 1) # kasutaja skoori kuvamine.
+            pygame.display.update() # tausta uuendamine.
 
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_q:
-                        game_over = True
-                        game_close = False
-                    if event.key == pygame.K_c:
-                        gameLoop()
+            for event in pygame.event.get(): # kasutaja tegevuste kuulamine.
+                if event.type == pygame.KEYDOWN: # kui kasutaja vajutas klahvi.
+                    if event.key == pygame.K_q: # kui kasutaja vajutas Q klahvi.
+                        game_over = True # mäng on läbi.
+                        game_close = False # mäng ei ole enam läbi.
+                    if event.key == pygame.K_c: # kui kasutaja vajutas C klahvi.
+                        gameLoop() # mängu uuesti alustamine.
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                game_over = True
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    x1_change = -snake_block
-                    y1_change = 0
-                elif event.key == pygame.K_RIGHT:
-                    x1_change = snake_block
-                    y1_change = 0
-                elif event.key == pygame.K_UP:
-                    y1_change = -snake_block
-                    x1_change = 0
-                elif event.key == pygame.K_DOWN:
-                    y1_change = snake_block
-                    x1_change = 0
+        for event in pygame.event.get(): # kasutaja tegevuste kuulamine.
+            if event.type == pygame.QUIT: # kui kasutaja sulgeb mängu.
+                game_over = True # mäng on läbi.
+            if event.type == pygame.KEYDOWN:  # kui kasutaja vajutas klahvi.
+                if event.key == pygame.K_LEFT: # kui kasutaja vajutas vasakule noolt.
+                    x1_change = -snake_block # muudab maoga seotud muutuja väärtuse vasakule.
+                    y1_change = 0 # muudab maoga seotud muutuja väärtuse 0-ks.
+                elif event.key == pygame.K_RIGHT: # kui kasutaja vajutas paremale noolt.
+                    x1_change = snake_block # muudab maoga seotud muutuja väärtuse paremale.
+                    y1_change = 0 # muudab maoga seotud muutuja väärtuse 0-ks.
+                elif event.key == pygame.K_UP: # kui kasutaja vajutas üles noolt.
+                    y1_change = -snake_block # muudab maoga seotud muutuja väärtuse ülespoole.
+                    x1_change = 0 # muudab maoga seotud muutuja väärtuse 0-ks.
+                elif event.key == pygame.K_DOWN: # kui kasutaja vajutas alla noolt.
+                    y1_change = snake_block # muudab maoga seotud muutuja väärtuse allapoole.
+                    x1_change = 0 # muudab maoga seotud muutuja väärtuse 0-ks.
 
-        if x1 >= dis_width or x1 < 0 or y1 >= dis_height or y1 < 0:
+        if x1 >= dis_width or x1 < 0 or y1 >= dis_height or y1 < 0: # Kui madu jõuab mänguvälja servadesse, siis mäng lõppeb
             game_close = True
+        # Liigutame madu
         x1 += x1_change
         y1 += y1_change
-        dis.fill(blue)
-        pygame.draw.rect(dis, red, [foodx, foody, snake_block, snake_block])
+        dis.fill(blue) # Täidame mänguvälja sinise värviga
+        pygame.draw.rect(dis, red, [foodx, foody, snake_block, snake_block]) # Joonistame toidu punase ruuduna mänguväljale
+        # Lisame madu pead sisaldava nimekirja uue elemendi
         snake_Head = []
         snake_Head.append(x1)
         snake_Head.append(y1)
         snake_List.append(snake_Head)
+        # Kui madu on pikem kui lubatud pikkus, siis kustutame madu saba lõpust
         if len(snake_List) > Length_of_snake:
             del snake_List[0]
-
+        # Kontrollime, kas madu on kokku põrganud iseendaga
         for x in snake_List[:-1]:
             if x == snake_Head:
                 game_close = True
-
+        # Joonistame mänguväljale madu
         our_snake(snake_block, snake_List)
+        # Näitame mängija skoori
         Your_score(Length_of_snake - 1)
-
+        # Värskendame ekraani
         pygame.display.update()
-
+        # Kui madu sööb toidu, siis lisame tema pikkusele ühe
         if x1 == foodx and y1 == foody:
             foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
             foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
             Length_of_snake += 1
-
+        # Seame mängu kiiruse vastavaks kella tick'idele
         clock.tick(snake_speed)
-
+    # Sulgeme Pygame'i ja lõpetame programmi töö
     pygame.quit()
     quit()
 
-
+# Kutsume välja gameLoop() funktsiooni, et alustada mängu
 gameLoop()
