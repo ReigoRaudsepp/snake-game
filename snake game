@@ -1,60 +1,71 @@
 # Reigo Raudsepp
 
-import pygame
-import random
+import pygame # imporditakse pygame
+import random # imporditakse random
 
 pygame.init()
 # värvid
-white = (255, 255, 255)
-yellow = (255, 255, 102)
-black = (0, 0, 0)
-red = (213, 50, 80)
-green = (0, 255, 0)
-blue = (50, 153, 213)
-# ekraani suurus ja laius
-dis_width = 1280
-dis_height = 720
+white = (255, 255, 255) # valge värv
+yellow = (255, 255, 102) # kollane värv
+black = (0, 0, 0) # must värv
+red = (213, 50, 80) # punane värv
+green = (0, 255, 0) # roheline värv
+blue = (50, 153, 213) # sinine värv
+# ekraani kõrgus ja laius
+dis_width = 1280 # ekraani laius
+dis_height = 720 # ekraani kõrgus
 # ekraani suuruse muutmine ja aknale nime andmine
-dis = pygame.display.set_mode((dis_width, dis_height))
-pygame.display.set_caption('Reigo Raudsepp - SNAKE GAME')
+dis = pygame.display.set_mode((dis_width, dis_height)) #
+pygame.display.set_caption('Reigo Raudsepp - SNAKE GAME') # aknale nime andmine
 
-clock = pygame.time.Clock()
+clock = pygame.time.Clock() #
 
-snake_block = 10
-snake_speed = 15
+snake_block = 10 # ussi suurus
+snake_speed = 15 # ussi kiirus
 
-font_style = pygame.font.SysFont("microsofthimalaya", 50)
-score_font = pygame.font.SysFont("microsofthimalaya", 40)
+font_style = pygame.font.SysFont("microsofthimalaya", 50) # kirja font mis tuleb ette kui sured
+score_font = pygame.font.SysFont("microsofthimalaya", 40) # skoori näitaja font
 
 
+# Defineerime funktsiooni "Your_score", mis kuvab mängija skoori ekraanil
 def Your_score(score):
+    # Loome uue tekstiobjekti, kasutades Pygame'i "render" funktsiooni
+    # Tekst sisaldab mängija skoori ning punast värvi
     value = score_font.render("SINU PUNKTID: " + str(score), True, red)
+    # Kuvame tekstiobjekti ekraanil, kasutades Pygame'i "blit" funktsiooni
+    # Tekst asub koordinaatidel [0, 0] ehk ekraani vasakus ülanurgas
     dis.blit(value, [0, 0])
 
-
-def our_snake(snake_block, snake_list):
-    for x in snake_list:
+def our_snake(snake_block, snake_list): # Funktsioon joonistab mängulauale ussi, kasutades pygame joonistusfunktsiooni.
+    for x in snake_list: # Itereerime üle iga ploki ussi kehas
+        # Joondistame pygame funktsiooniga ploki kasutades pygame'i aknasse "dis"
+        # antud rohelise värvi ja x-koordinaadi, y-koordinaadi, ploki pikkuse ja laiusega
         pygame.draw.rect(dis, green, [x[0], x[1], snake_block, snake_block])
 
 
-def message(msg, color):
-    mesg = font_style.render(msg, True, color)
-    dis.blit(mesg, [dis_width / 5, dis_height / 2])
+def message(msg, color): # see funktsioon joonistab ruudu ekraanile, kasutades Pygame'i
+    mesg = font_style.render(msg, True, color) # loome ruudu rect objekti, kasutades antud x, y koordinaate ja suurust
+    dis.blit(mesg, [dis_width / 5, dis_height / 2]) # joonistame ruudu ekraanile antud värviga
 
 
 def gameLoop():
+    # Seadistab mängu algseisundi.
     game_over = False
     game_close = False
 
+    # Määrab ussi algse positsiooni.
     x1 = dis_width / 2
     y1 = dis_height / 2
 
+    # Määrab ussi esialgse liikumissuuna.
     x1_change = 0
     y1_change = 0
 
+    # Loob tühja ussi järjendi.
     snake_List = []
     Length_of_snake = 1
 
+    # Määrab toidu asukoha juhuslikult, kuid nii, et see jääks ruutudele joondatuks.
     foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
     foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
 
