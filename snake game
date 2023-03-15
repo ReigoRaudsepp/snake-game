@@ -20,18 +20,17 @@ pygame.display.set_caption('Reigo Raudsepp - SNAKE GAME') # aknale nime andmine
 
 clock = pygame.time.Clock() # Loob kella objekti mängu juhtimiseks
 
-snake_block = 10 # mao suurus
+snake_block = 20 # mao suurus
 snake_speed = 15 # mao kiirus
 
 font_style = pygame.font.SysFont("microsofthimalaya", 50) # kirja font mis tuleb ette kui sured
 score_font = pygame.font.SysFont("microsofthimalaya", 40) # skoori näitaja font
 
-
 # Defineerime funktsiooni "Your_score", mis kuvab mängija skoori ekraanil
 def Your_score(score):
     # Loome uue tekstiobjekti, kasutades Pygame'i "render" funktsiooni
     # Tekst sisaldab mängija skoori ning punast värvi
-    value = score_font.render("SINU PUNKTID: " + str(score), True, red)
+    value = score_font.render("SINU PUNKTID: " + str(score), True, yellow)
     # Kuvame tekstiobjekti ekraanil, kasutades Pygame'i "blit" funktsiooni
     # Tekst asub koordinaatidel [0, 0] ehk ekraani vasakus ülanurgas
     dis.blit(value, [0, 0])
@@ -66,8 +65,8 @@ def gameLoop():
     Length_of_snake = 1
 
     # Määrab toidu asukoha juhuslikult, kuid nii, et see jääks ruutudele joondatuks.
-    foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
-    foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
+    foodx = round(random.randrange(0, dis_width - snake_block) / 20.0) * 20.0
+    foody = round(random.randrange(0, dis_height - snake_block) / 20.0) * 20.0
 
     while not game_over: # mäng jätkub, kuni game_over muutuja väärtus on False.
 
@@ -129,8 +128,8 @@ def gameLoop():
         pygame.display.update()
         # Kui madu sööb toidu, siis lisame tema pikkusele ühe
         if x1 == foodx and y1 == foody:
-            foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
-            foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
+            foodx = round(random.randrange(0, dis_width - snake_block) / 20.0) * 20.0
+            foody = round(random.randrange(0, dis_height - snake_block) / 20.0) * 20.0
             Length_of_snake += 1
         # Seame mängu kiiruse vastavaks kella tick'idele
         clock.tick(snake_speed)
